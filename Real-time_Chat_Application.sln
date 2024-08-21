@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChatApp_Server", "ChatApp_Server", "{5363273F-9EA3-4AE4-AEB5-A5F3E8D84AB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChatApp_Client", "ChatApp_Client", "{6AF9FDB8-D965-4B2C-8987-52C1F4105AE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{CB35882A-2CE0-4786-BDC3-A796C676822F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp", "ChatApp_Client\WPF\ChatApp\ChatApp.csproj", "{93DA3DB0-41C1-4631-822B-88EB142E90F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleWeb", "SimpleWeb", "{6B9B3D0B-AB85-4610-849B-9C122CD43DA1}"
+	ProjectSection(SolutionItems) = preProject
+		ChatApp_Client\SimpleWeb\index.html = ChatApp_Client\SimpleWeb\index.html
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp_API", "ChatApp_Server\ChatApp_API\ChatApp_API.csproj", "{19729326-05B3-40B7-A066-53E047A8395B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93DA3DB0-41C1-4631-822B-88EB142E90F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93DA3DB0-41C1-4631-822B-88EB142E90F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93DA3DB0-41C1-4631-822B-88EB142E90F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93DA3DB0-41C1-4631-822B-88EB142E90F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19729326-05B3-40B7-A066-53E047A8395B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19729326-05B3-40B7-A066-53E047A8395B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19729326-05B3-40B7-A066-53E047A8395B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19729326-05B3-40B7-A066-53E047A8395B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CB35882A-2CE0-4786-BDC3-A796C676822F} = {6AF9FDB8-D965-4B2C-8987-52C1F4105AE5}
+		{93DA3DB0-41C1-4631-822B-88EB142E90F7} = {CB35882A-2CE0-4786-BDC3-A796C676822F}
+		{6B9B3D0B-AB85-4610-849B-9C122CD43DA1} = {6AF9FDB8-D965-4B2C-8987-52C1F4105AE5}
+		{19729326-05B3-40B7-A066-53E047A8395B} = {5363273F-9EA3-4AE4-AEB5-A5F3E8D84AB3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B870F46B-BB5E-4789-9C83-36C2B0D28FF6}
+	EndGlobalSection
+EndGlobal
