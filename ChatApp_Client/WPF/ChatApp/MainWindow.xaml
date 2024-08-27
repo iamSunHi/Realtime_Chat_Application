@@ -5,8 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatApp"
         mc:Ignorable="d"
-        Title="Chat Application" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+        Title="Chat Application" Height="450" Width="800" Icon="/favicon.jpg">
+    <DockPanel Margin="4,4,4,4">
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Welcome !" Width="auto" FontSize="16"/>
+        <DockPanel DockPanel.Dock="Bottom" Width="auto">
+            <Button DockPanel.Dock="Right" Content="Send" Width="100" Cursor="Hand"/>
+            <TextBox TextWrapping="Wrap" Text="" Width="auto" Margin="0,0,8,0" Padding="4,4,4,4"/>
+        </DockPanel>
+        <Border Margin="4,4,4,4" BorderThickness="0,1,0,1" BorderBrush="Black" Padding="0,4,0,4">
+            <StackPanel x:Name="MessageStackPanel" Margin="0,0,0,2" OpacityMask="Black">
+                <local:Message/>
+            </StackPanel>
+        </Border>
+    </DockPanel>
 </Window>
