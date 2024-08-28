@@ -11,6 +11,7 @@
     <div id="chat"></div>
 
     <script>
+        let USERNAME = "NhatHuy";
         const socket = new WebSocket("wss://localhost:9999/api/chat");
 
         socket.onopen = (event) => {
@@ -18,8 +19,11 @@
         };
 
         socket.onmessage = (event) => {
+            const receivedMessage = event.data.split(":");
+            let message = receivedMessage[1].trim();
+
             const chatDiv = document.getElementById("chat");
-            chatDiv.innerHTML += `<p>${event.data}</p>`;
+            chatDiv.innerHTML += `<p>${USERNAME}: ${message}</p>`;
         };
 
         socket.onclose = (event) => {
@@ -32,7 +36,7 @@
 
         function sendMessage() {
             const messageInput = document.getElementById("messageInput");
-            const message = messageInput.value;
+            const message = `${USERNAME}: ${messageInput.value}`;
             socket.send(message);
             messageInput.value = "";
         }

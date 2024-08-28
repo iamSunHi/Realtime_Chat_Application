@@ -20,13 +20,30 @@ namespace ChatApp
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private string USERNAME = "iamSunHi";
 		private readonly ChatWebSocketHandler _chatWebSocketHandler = new ChatWebSocketHandler();
 
 		public MainWindow()
 		{
 			InitializeComponent();
 
+			WelcomeTxt.Text = $"Welcome, {USERNAME}!";
 			_ = ConnectServerAsync();
+		}
+
+		private async void SendButton_ClickAsync(object sender, RoutedEventArgs e)
+		{
+			if (_chatWebSocketHandler.ClientSocket.State == WebSocketState.Open)
+			{
+				var message = $"{USERNAME}: {MessageTxt.Text}";
+				MessageTxt.Text = string.Empty;
+
+				await _chatWebSocketHandler.SendMessage(message);
+			}
+			else
+			{
+				MessageBox.Show("WebSocket is not connected!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
 		}
 
 		private void AddMessage(string sender, string message, bool isOwner)
@@ -48,8 +65,15 @@ namespace ChatApp
 
 		private async Task ConnectServerAsync()
 		{
-			var connectionStatus = await _chatWebSocketHandler.ConnectSocketServer();
+			var (isSuccess, connectionStatus) = await _chatWebSocketHandler.ConnectSocketServer();
 			MessageBox.Show(connectionStatus, "Connection Status", MessageBoxButton.OK, MessageBoxImage.Information);
+
+			if (!isSuccess)
+			{
+				Close();
+				return;
+			}
+
 			await ReceiveMessages();
 		}
 
@@ -66,26 +90,19 @@ namespace ChatApp
 				}
 				else
 				{
-					var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-					AddMessage("Client", message, false);
+					var receivedMessage = Encoding.UTF8.GetString(buffer, 0, result.Count).Split(':', 2);
+					var sender = receivedMessage[0];
+					var message = receivedMessage[1].Trim();
+					AddMessage(sender, message, sender == USERNAME);
 				}
 			}
 		}
 
-		private async void SendButton_ClickAsync(object sender, RoutedEventArgs e)
+		private void MessageTxt_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (_chatWebSocketHandler.ClientSocket.State == WebSocketState.Open)
+			if (e.Key == Key.Enter)
 			{
-				var message = MessageTxt.Text;
-				MessageTxt.Text = string.Empty;
-
-				await _chatWebSocketHandler.SendMessage(message);
-
-				AddMessage("You", message, true);
-			}
-			else
-			{
-				MessageBox.Show("WebSocket is not connected!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				SendButton_ClickAsync(sender, e);
 			}
 		}
 	}

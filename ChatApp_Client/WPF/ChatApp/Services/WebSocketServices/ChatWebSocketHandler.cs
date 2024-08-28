@@ -17,16 +17,16 @@ namespace ChatApp.Services.WebSocketServices
 			ClientSocket = new ClientWebSocket();
 		}
 
-		public async Task<string> ConnectSocketServer()
+		public async Task<(bool, string)> ConnectSocketServer()
 		{
 			try
 			{
 				await ClientSocket.ConnectAsync(new Uri(SOCKET_SERVER_URL), CancellationToken.None);
-				return "Connected to server.";
+				return (true, "Connected to server.");
 			}
 			catch (Exception ex)
 			{
-				return $"Connection failed: {ex.Message}";
+				return (false, $"Connection failed: {ex.Message}");
 			}
 		}
 
