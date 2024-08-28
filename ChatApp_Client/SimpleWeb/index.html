@@ -11,7 +11,7 @@
     <div id="chat"></div>
 
     <script>
-        const socket = new WebSocket("https://localhost:9999/api/chat");
+        const socket = new WebSocket("wss://localhost:9999/api/chat");
 
         socket.onopen = (event) => {
             console.log("WebSocket connection established.");
