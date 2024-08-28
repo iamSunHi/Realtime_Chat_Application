@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,17 @@ namespace ChatApp.ViewModels
 {
 	public class MessageVM
 	{
-		public string Time { get; set; } = null!;
-		public string SenderName { get; set; } = null!;
-		public string MessageText { get; set; } = null!;
-		public bool IsOwner { get; set; } = false;
+		public MessageEntity Message { get; set; }
+
+		public MessageVM()
+		{
+			Message = new MessageEntity
+			{
+				Time = DateTime.Now.ToShortTimeString(),
+				SenderName = "Sun Hi",
+				MessageText = "Hi, is anyone online?",
+				IsOwner = false
+			};
+		}
 	}
 }
