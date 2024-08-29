@@ -19,7 +19,7 @@ namespace ChatApp.Services.WebSocketServices
 			USER_ID = userId;
 		}
 
-		public async Task<(bool, string)> ConnectSocketServer()
+		public async Task<(bool, string)> ConnectSocketServerAsync()
 		{
 			try
 			{
@@ -32,7 +32,7 @@ namespace ChatApp.Services.WebSocketServices
 			}
 		}
 
-		public async Task<string> SendMessage(string message)
+		public async Task<string> SendMessageAsync(string message)
 		{
 			try
 			{
@@ -44,6 +44,11 @@ namespace ChatApp.Services.WebSocketServices
 			{
 				return $"Failed to send message: {ex.Message}";
 			}
+		}
+
+		public async Task DisconnectSocketServerAsync()
+		{
+			await ClientSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Client disconnected.", CancellationToken.None);
 		}
 	}
 }

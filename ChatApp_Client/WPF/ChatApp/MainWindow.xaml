@@ -7,9 +7,12 @@
         mc:Ignorable="d"
         Title="Chat Application" Height="450" Width="800" Icon="/favicon.jpg">
     <DockPanel Margin="4,4,4,4">
-        <TextBlock x:Name="WelcomeTxt" DockPanel.Dock="Top" TextWrapping="Wrap" Text="Welcome !" Width="auto" FontSize="16"/>
+        <DockPanel DockPanel.Dock="Top" >
+            <Button x:Name="LogoutBtn" DockPanel.Dock="Right" Content="Logout" Width="100" Cursor="Hand" Click="LogoutButton_Click" Background="#FFBB1010" Foreground="White" Padding="2,4,2,4"/>
+            <TextBlock x:Name="WelcomeTxt" TextWrapping="Wrap" Text="Welcome!" Width="auto" FontSize="16" VerticalAlignment="Center"/>
+        </DockPanel>
         <DockPanel DockPanel.Dock="Bottom" Width="auto">
-            <Button x:Name="SendBtn" DockPanel.Dock="Right" Content="Send" Width="100" Cursor="Hand" Click="SendButton_ClickAsync"/>
+            <Button x:Name="SendBtn" DockPanel.Dock="Right" Content="Send" Width="100" Cursor="Hand" Click="SendButton_ClickAsync" Background="#FF94FFF3" Foreground="#FF8E5555"/>
             <TextBox x:Name="MessageTxt" TextWrapping="Wrap" Text="" Width="auto" Margin="0,0,8,0" Padding="4,4,4,4" KeyDown="MessageTxt_KeyDown"/>
         </DockPanel>
         <Border Margin="4,4,4,4" BorderThickness="0,1,0,1" BorderBrush="Black" Padding="0,4,0,4">

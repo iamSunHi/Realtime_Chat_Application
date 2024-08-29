@@ -7,11 +7,11 @@ using System.Windows.Controls;
 namespace ChatApp
 {
 	/// <summary>
-	/// Interaction logic for Login.xaml
+	/// Interaction logic for LoginWindown.xaml
 	/// </summary>
-	public partial class Login : Window
+	public partial class LoginWindown : Window
 	{
-		public Login()
+		public LoginWindown()
 		{
 			InitializeComponent();
 

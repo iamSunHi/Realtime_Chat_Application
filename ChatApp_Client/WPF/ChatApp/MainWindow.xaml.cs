@@ -40,7 +40,7 @@ namespace ChatApp
 				var message = MessageTxt.Text;
 				MessageTxt.Text = string.Empty;
 
-				await _chatWebSocketHandler.SendMessage(message);
+				await _chatWebSocketHandler.SendMessageAsync(message);
 				AddMessage(_userInfo.Name, message, true);
 			}
 			else
@@ -74,7 +74,7 @@ namespace ChatApp
 
 		private async Task ConnectServerAsync()
 		{
-			var (isSuccess, connectionStatus) = await _chatWebSocketHandler.ConnectSocketServer();
+			var (isSuccess, connectionStatus) = await _chatWebSocketHandler.ConnectSocketServerAsync();
 			MessageBox.Show(connectionStatus, "Connection Status", MessageBoxButton.OK, MessageBoxImage.Information);
 
 			if (!isSuccess)
@@ -113,6 +113,15 @@ namespace ChatApp
 			{
 				SendButton_ClickAsync(sender, e);
 			}
+		}
+
+		private async void LogoutButton_Click(object sender, RoutedEventArgs e)
+		{
+			await _chatWebSocketHandler.DisconnectSocketServerAsync();
+
+			var loginWindow = new LoginWindown();
+			loginWindow.Show();
+			Close();
 		}
 	}
 }
