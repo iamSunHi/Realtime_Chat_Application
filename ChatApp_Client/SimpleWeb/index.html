@@ -11,16 +11,15 @@
     <div id="chat"></div>
 
     <script>
-        let USERNAME = "NhatHuy";
-        const socket = new WebSocket("wss://localhost:9999/api/chat?userId=cf6287b0-7650-4fd5-8edb-48b5cdef9b86");
+        let USERNAME = "Sun Hi";
+        const socket = new WebSocket("wss://localhost:9999/api/chat?userId=b4de7e8f-4c65-45a8-9426-7b60d0b8fa12");
 
         socket.onopen = (event) => {
             console.log("WebSocket connection established.");
         };
 
         socket.onmessage = (event) => {
-            const receivedMessage = event.data.split(":");
-            let message = receivedMessage[1].trim();
+            const message = event.data;
 
             const chatDiv = document.getElementById("chat");
             chatDiv.innerHTML += `<p>${message}</p>`;

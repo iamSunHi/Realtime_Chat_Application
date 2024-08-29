@@ -19,6 +19,9 @@
                         <DataTrigger Binding="{Binding MessageVM.Message.IsOwner}" Value="False">
                             <Setter Property="Background" Value="#FF477180"/>
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding IsAdmin}" Value="True">
+                            <Setter Property="Background" Value="DarkRed"/>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Border.Style>

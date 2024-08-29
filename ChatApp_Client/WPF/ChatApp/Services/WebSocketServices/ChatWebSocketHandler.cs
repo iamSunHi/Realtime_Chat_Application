@@ -9,19 +9,21 @@ namespace ChatApp.Services.WebSocketServices
 {
 	public class ChatWebSocketHandler
 	{
+		private Guid USER_ID = Guid.Empty;
 		private readonly string SOCKET_SERVER_URL = "wss://localhost:9999/api/chat";
 		public readonly ClientWebSocket ClientSocket;
 
-		public ChatWebSocketHandler()
+		public ChatWebSocketHandler(Guid userId)
 		{
 			ClientSocket = new ClientWebSocket();
+			USER_ID = userId;
 		}
 
 		public async Task<(bool, string)> ConnectSocketServer()
 		{
 			try
 			{
-				await ClientSocket.ConnectAsync(new Uri(SOCKET_SERVER_URL), CancellationToken.None);
+				await ClientSocket.ConnectAsync(new Uri($"{SOCKET_SERVER_URL}?userId={USER_ID}"), CancellationToken.None);
 				return (true, "Connected to server.");
 			}
 			catch (Exception ex)

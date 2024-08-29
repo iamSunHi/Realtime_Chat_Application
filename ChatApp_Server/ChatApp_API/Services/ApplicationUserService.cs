@@ -1,4 +1,5 @@
-﻿using ChatApp_API.Models;
+﻿using ChatApp_API.DTOs;
+using ChatApp_API.Models;
 using ChatApp_API.Repositories.IRepositories;
 using ChatApp_API.Services.IServices;
 
@@ -13,9 +14,24 @@ namespace ChatApp_API.Services
 			_applicationUserRepository = applicationUserRepository;
 		}
 
-		public async Task<ApplicationUser?> GetUserAsync(Guid userId)
+		public async Task<UserInfoDTO?> GetUserAsync(Guid userId)
 		{
-			return await _applicationUserRepository.GetAsync(u => u.Id == userId);
+			var userFromDb = await _applicationUserRepository.GetAsync(u => u.Id == userId);
+
+			if (userFromDb is null)
+			{
+				return null;
+			}
+
+			return new UserInfoDTO
+			{
+				Id = userFromDb.Id,
+				Username = userFromDb.Username,
+				Email = userFromDb.Email,
+				Name = userFromDb.Name,
+				CreatedAt = userFromDb.CreatedAt,
+				UpdatedAt = userFromDb.UpdatedAt
+			};
 		}
 	}
 }

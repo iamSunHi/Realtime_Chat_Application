@@ -1,17 +1,11 @@
-﻿using ChatApp.Models;
+﻿using ChatApp.DTOs;
+using ChatApp.Models;
 using ChatApp.Services.WebSocketServices;
 using ChatApp.ViewModels;
 using System.Net.WebSockets;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ChatApp
 {
@@ -20,25 +14,34 @@ namespace ChatApp
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private string USERNAME = "iamSunHi";
-		private readonly ChatWebSocketHandler _chatWebSocketHandler = new ChatWebSocketHandler();
+		private UserInfoDTO _userInfo;
+		private readonly ChatWebSocketHandler _chatWebSocketHandler;
 
-		public MainWindow()
+		public MainWindow(UserInfoDTO userInfo)
 		{
 			InitializeComponent();
 
-			WelcomeTxt.Text = $"Welcome, {USERNAME}!";
+			_userInfo = userInfo;
+			_chatWebSocketHandler = new ChatWebSocketHandler(_userInfo.Id);
+
+			WelcomeTxt.Text = $"Welcome, {_userInfo.Name}!";
 			_ = ConnectServerAsync();
 		}
 
 		private async void SendButton_ClickAsync(object sender, RoutedEventArgs e)
 		{
+			if (string.IsNullOrWhiteSpace(MessageTxt.Text))
+			{
+				return;
+			}
+
 			if (_chatWebSocketHandler.ClientSocket.State == WebSocketState.Open)
 			{
-				var message = $"{USERNAME}: {MessageTxt.Text}";
+				var message = MessageTxt.Text;
 				MessageTxt.Text = string.Empty;
 
 				await _chatWebSocketHandler.SendMessage(message);
+				AddMessage(_userInfo.Name, message, true);
 			}
 			else
 			{
@@ -60,7 +63,13 @@ namespace ChatApp
 				}
 			});
 
+			if (sender.Trim() == "admin")
+			{
+				messageUserControl.SetValue(MessageUserControl.IsAdminProperty, true);
+			}
+
 			this.MessageStackPanel.Children.Add(messageUserControl);
+			MessageScrollViewer.ScrollToBottom();
 		}
 
 		private async Task ConnectServerAsync()
@@ -93,7 +102,7 @@ namespace ChatApp
 					var receivedMessage = Encoding.UTF8.GetString(buffer, 0, result.Count).Split(':', 2);
 					var sender = receivedMessage[0];
 					var message = receivedMessage[1].Trim();
-					AddMessage(sender, message, sender == USERNAME);
+					AddMessage(sender, message, sender == _userInfo.Name);
 				}
 			}
 		}

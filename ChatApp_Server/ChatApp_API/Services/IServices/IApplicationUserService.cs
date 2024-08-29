@@ -1,9 +1,10 @@
-﻿using ChatApp_API.Models;
+﻿using ChatApp_API.DTOs;
+using ChatApp_API.Models;
 
 namespace ChatApp_API.Services.IServices
 {
 	public interface IApplicationUserService
 	{
-		public Task<ApplicationUser?> GetUserAsync(Guid userId);
+		public Task<UserInfoDTO?> GetUserAsync(Guid userId);
 	}
 }

@@ -13,8 +13,9 @@
             <TextBox x:Name="MessageTxt" TextWrapping="Wrap" Text="" Width="auto" Margin="0,0,8,0" Padding="4,4,4,4" KeyDown="MessageTxt_KeyDown"/>
         </DockPanel>
         <Border Margin="4,4,4,4" BorderThickness="0,1,0,1" BorderBrush="Black" Padding="0,4,0,4">
-            <StackPanel x:Name="MessageStackPanel" Margin="0,0,0,2" OpacityMask="Black">
-            </StackPanel>
+            <ScrollViewer x:Name="MessageScrollViewer" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="MessageStackPanel" Margin="0,0,0,2" OpacityMask="Black"/>
+            </ScrollViewer>
         </Border>
     </DockPanel>
 </Window>

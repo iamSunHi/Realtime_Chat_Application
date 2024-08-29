@@ -1,4 +1,5 @@
-﻿using ChatApp_API.Models;
+﻿using ChatApp_API.DTOs;
+using ChatApp_API.Models;
 using ChatApp_API.Repositories.IRepositories;
 using System.Net.WebSockets;
 using System.Text;
@@ -16,13 +17,14 @@ namespace ChatApp_API.Services.WebSocketServices
 			_connectionManager = connectionManager;
 		}
 
-		public async Task HandleWebSocketAsync(HttpContext httpContext, ApplicationUser user)
+		public async Task HandleWebSocketAsync(HttpContext httpContext, UserInfoDTO user)
 		{
 
 			var webSocket = await httpContext.WebSockets.AcceptWebSocketAsync();
 			_connectionManager.AddSocket(webSocket, user.Id);
 
 			_logger.LogInformation($"Client with ID {user.Id} connected!");
+			await BroadcastMessageAsync($"admin: {user.Name} has joined the chat session.", senderId: Guid.Empty);
 
 			try
 			{
@@ -44,6 +46,7 @@ namespace ChatApp_API.Services.WebSocketServices
 			{
 				_connectionManager.RemoveSocket(user.Id);
 				_logger.LogError($"Client with ID {user.Id} disconnected!");
+				await BroadcastMessageAsync($"admin: {user.Name} has left the chat session.", senderId: Guid.Empty);
 			}
 		}
 

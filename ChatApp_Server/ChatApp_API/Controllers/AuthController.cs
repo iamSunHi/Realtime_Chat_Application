@@ -10,10 +10,12 @@ namespace ChatApp_API.Controllers
 	public class AuthController : ControllerBase
 	{
 		private readonly IAuthService _authService;
+		private readonly IApplicationUserService _applcationUserService;
 
-		public AuthController(IAuthService authService)
+		public AuthController(IAuthService authService, IApplicationUserService applcationUserService)
 		{
 			_authService = authService;
+			_applcationUserService = applcationUserService;
 		}
 
 		[HttpPost("login")]
@@ -27,7 +29,8 @@ namespace ChatApp_API.Controllers
 			}
 			else
 			{
-				return Ok(userId);
+				var user = await _applcationUserService.GetUserAsync(userId);
+				return Ok(user);
 			}
 		}
 
