@@ -17,16 +17,14 @@ namespace ChatApp_API.Services.WebSocketServices
 			return _sockets.FirstOrDefault(p => p.Value == socket).Key;
 		}
 
-		public Guid AddSocket(WebSocket socket)
+		public void AddSocket(WebSocket socket, Guid userId)
 		{
-			var id = Guid.NewGuid();
-			_sockets.TryAdd(id, socket);
-			return id;
+			_sockets.TryAdd(userId, socket);
 		}
 
-		public IEnumerable<WebSocket> GetAllSockets()
+		public (Guid[], WebSocket[]) GetAllSockets()
 		{
-			return _sockets.Values;
+			return (_sockets.Keys.ToArray(), _sockets.Values.ToArray());
 		}
 
 		public void RemoveSocket(Guid socketId)

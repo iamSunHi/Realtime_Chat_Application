@@ -1,4 +1,6 @@
-﻿using System.Net.WebSockets;
+﻿using ChatApp_API.Models;
+using ChatApp_API.Repositories.IRepositories;
+using System.Net.WebSockets;
 using System.Text;
 
 namespace ChatApp_API.Services.WebSocketServices
@@ -14,11 +16,13 @@ namespace ChatApp_API.Services.WebSocketServices
 			_connectionManager = connectionManager;
 		}
 
-		public async Task HandleWebSocketAsync(WebSocket webSocket)
+		public async Task HandleWebSocketAsync(HttpContext httpContext, ApplicationUser user)
 		{
-			var socketId = _connectionManager.AddSocket(webSocket);
 
-			_logger.LogInformation($"Client with ID {socketId} connected!");
+			var webSocket = await httpContext.WebSockets.AcceptWebSocketAsync();
+			_connectionManager.AddSocket(webSocket, user.Id);
+
+			_logger.LogInformation($"Client with ID {user.Id} connected!");
 
 			try
 			{
@@ -28,17 +32,18 @@ namespace ChatApp_API.Services.WebSocketServices
 
 					if (!string.IsNullOrEmpty(message))
 					{
-						_logger.LogInformation($"Received message from client with ID {socketId}: {message}");
+						_logger.LogInformation($"Received message from client with ID {user.Id}: {message}");
 
-						await BroadcastMessageAsync(message);
+						message = $"{user.Name}: {message}";
+						await BroadcastMessageAsync(message, senderId: user.Id);
 					}
 				}
 			}
 			catch { }
 			finally
 			{
-				_connectionManager.RemoveSocket(socketId);
-				_logger.LogError($"Client with ID {socketId} disconnected!");
+				_connectionManager.RemoveSocket(user.Id);
+				_logger.LogError($"Client with ID {user.Id} disconnected!");
 			}
 		}
 
@@ -55,13 +60,15 @@ namespace ChatApp_API.Services.WebSocketServices
 			return Encoding.UTF8.GetString(buffer, 0, result.Count);
 		}
 
-		private async Task BroadcastMessageAsync(string message)
+		private async Task BroadcastMessageAsync(string message, Guid senderId)
 		{
-			foreach (var socket in _connectionManager.GetAllSockets())
+			var (userIdList, socketList) = _connectionManager.GetAllSockets();
+
+			for (int i = 0; i < socketList.Length; i++)
 			{
-				if (socket.State == WebSocketState.Open)
+				if (socketList[i].State == WebSocketState.Open && userIdList[i] != senderId)
 				{
-					await socket.SendAsync(Encoding.UTF8.GetBytes(message), WebSocketMessageType.Text, true, CancellationToken.None);
+					await socketList[i].SendAsync(Encoding.UTF8.GetBytes(message), WebSocketMessageType.Text, true, CancellationToken.None);
 				}
 			}
 		}

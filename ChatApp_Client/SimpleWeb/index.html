@@ -12,7 +12,7 @@
 
     <script>
         let USERNAME = "NhatHuy";
-        const socket = new WebSocket("wss://localhost:9999/api/chat");
+        const socket = new WebSocket("wss://localhost:9999/api/chat?userId=cf6287b0-7650-4fd5-8edb-48b5cdef9b86");
 
         socket.onopen = (event) => {
             console.log("WebSocket connection established.");
@@ -23,7 +23,7 @@
             let message = receivedMessage[1].trim();
 
             const chatDiv = document.getElementById("chat");
-            chatDiv.innerHTML += `<p>${USERNAME}: ${message}</p>`;
+            chatDiv.innerHTML += `<p>${message}</p>`;
         };
 
         socket.onclose = (event) => {
@@ -36,9 +36,12 @@
 
         function sendMessage() {
             const messageInput = document.getElementById("messageInput");
-            const message = `${USERNAME}: ${messageInput.value}`;
+            const message = `${messageInput.value}`;
             socket.send(message);
             messageInput.value = "";
+
+            const chatDiv = document.getElementById("chat");
+            chatDiv.innerHTML += `<p>${USERNAME}: ${message}</p>`;
         }
     </script>
 </body>

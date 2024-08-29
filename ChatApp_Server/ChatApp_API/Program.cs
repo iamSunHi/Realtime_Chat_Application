@@ -5,7 +5,6 @@ using ChatApp_API.Repositories.IRepositories;
 using ChatApp_API.Services;
 using ChatApp_API.Services.IServices;
 using ChatApp_API.Services.WebSocketServices;
-using Microsoft.AspNetCore.WebSockets;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChatApp_API
@@ -31,6 +30,7 @@ namespace ChatApp_API
 			#region Services
 
 			builder.Services.AddScoped<IAuthService, AuthService>();
+			builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
 
 			#endregion
 
